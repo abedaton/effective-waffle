@@ -46,9 +46,9 @@ class Server:
                             closeCons.append(connection)
                     for closeCon in closeCons:
                         print(closeCon, "disconnected")
-                        self.connections.remove(closeCon)
                         for connection in self.connections:
                             connection[0].send(closeCon[1]+b' disconnected\n')
+                        self.connections.remove(closeCon)
                         closeCon[0].close()
 
     def run(self):
