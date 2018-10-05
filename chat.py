@@ -43,7 +43,7 @@ class Server:
                     closeCons=[]
                     for connection in self.connections:
                         if str(connection[1],"utf-8") in cmd[1].split():
-                            closeCond.append(connection)
+                            closeCons.append(connection)
                     for closeCon in closeCons:
                         print(closeCon, "disconnected")
                         self.connections.remove(closeCon)
