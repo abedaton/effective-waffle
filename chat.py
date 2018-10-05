@@ -4,7 +4,6 @@ import socket
 import threading
 import sys
 import os
-from termcolor import cprint
 
 class Server:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -81,6 +80,26 @@ class Client:
 
 
 if (len(sys.argv) > 1):
+    try:
+        from termcolor import cprint
+        print("success 1")
+    except:
+        try:
+            os.system("pip3 install --user termcolor > /dev/null")
+            print("Download des couleurs.....")
+            time.sleep(10)
+            from termcolor import cprint
+            print("success 2")
+        except:
+            try:
+                os.system(os.system("python3 -m pip install --user Xlib > /dev/null"))
+                print("Download des couleurs......")
+                time.sleep(10)
+                from termcolor import cprint
+                print("success 3")
+            except:
+                cprint=(lambda msg,color:print(msg))
+                print("ben no color for you bah voila")
     try:
         Client = Client(sys.argv[1])
     except KeyboardInterrupt:
