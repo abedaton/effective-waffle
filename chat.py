@@ -24,7 +24,7 @@ class Server:
                 break
             data=str(data,"utf-8")
             msg=data.split(maxsplit=2)
-            if msg[0]=="/msg":
+            if len(msg)==3 and msg[0]=="/msg":
                 for connection in self.connections:
                     if connection[1]==bytes(msg[1],"utf-8") or connection[1]==username:
                         connection[0].send(username+b' (pm): '+bytes(msg[2],"utf-8"))
@@ -73,7 +73,7 @@ class Client:
         self.sock.send(bytes(self.username, "utf-8"))
         while True:
             msg=input("")
-            if msg[0]=="!":
+            if len(msg)>0 and msg[0]=="!":
                 os.system(msg[1:])
             else:
                 self.sock.send(bytes(msg, "utf-8"))
