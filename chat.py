@@ -26,8 +26,8 @@ class Server:
             msg=data.split(maxsplit=2)
             if msg[0]=="/msg":
                 for connection in self.connections:
-                    if connection[1]==msg[1]:
-                        connection[0].send(username+b': '+bytes(msg[2],"utf-8"))
+                    if connection[1]==msg[1] or connection[1]==username:
+                        connection[0].send(username+b' (pm): '+bytes(msg[2],"utf-8"))
             else:
                 for connection in self.connections:
                     connection[0].send(username+b': '+bytes(data,"utf-8"))
