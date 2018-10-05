@@ -31,6 +31,9 @@ class Server:
                 for connection in self.connections:
                     if connection[1]==bytes(msg[1],"utf-8") or connection[1]==username:
                         connection[0].send(username+b' (pm): '+bytes(msg[2],"utf-8"))
+            elif msg[0] == "/online":
+                    users = [str(connection[1],"utf-8") for connection in self.connections]
+                    c.send(bytes("Users connected:\n"+("\n".join(users) if len(users)>0 else "None"),"utf-8"))
             else:
                 for connection in self.connections:
                     connection[0].send(username+b': '+bytes(data,"utf-8"))
@@ -122,7 +125,7 @@ if __name__=="__main__":
                 print("success 2")
             except:
                 try:
-                    os.system(os.system("python3 -m pip install --user Xlib > /dev/null"))
+                    os.system("python3 -m pip install --user Xlib > /dev/null")
                     print("Download des couleurs......")
                     time.sleep(10)
                     from termcolor import cprint
