@@ -39,13 +39,19 @@ class Server:
                 if cmd[0]=="msgall" and len(cmd)>1:
                     for connection in self.connections:
                         connection[0].send(b'[SERVER]: '+bytes(cmd[1],"utf-8"))
+                elif cmd[0]=="msg" and len(cmd)>1:
+                    msg=cmd[1].split(maxsplit=1)
+                    if len(msg)>1:
+                        for connection in self.connections:
+                            if connection[1]==bytes(msg[0],"utf-8"):
+                                connection[0].send(b'[SERVER (pm)]: '+bytes(msg[1],"utf-8"))
                 elif cmd[0]=="kick" and len(cmd)>1:
                     closeCons=[]
                     for connection in self.connections:
                         if str(connection[1],"utf-8") in cmd[1].split():
                             closeCons.append(connection)
                     for closeCon in closeCons:
-                        print(closeCon, "disconnected")
+                        print(closeCon[1], "disconnected")
                         for connection in self.connections:
                             connection[0].send(closeCon[1]+b' disconnected\n')
                         self.connections.remove(closeCon)
@@ -58,6 +64,7 @@ class Server:
         while True:
             c, a = self.sock.accept()
             username=c.recv(1024)
+            print(username+b' connected')
             for connection in self.connections:
                 connection[0].send(username+b' connected')
             users=[str(connection[1],"utf-8") for connection in self.connections]
@@ -86,7 +93,7 @@ class Client:
             if not data:
                 break
             msg=str(data,"utf-8")
-            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")] in [self.username,self.username+" (pm)"] else "red" if msg[:msg.index(":")]=="[SERVER]" else "cyan"
+            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")] in [self.username,self.username+" (pm)"] else "red" if msg[:7]=="[SERVER" else "cyan"
             if color=="green":
                 msg="message sent"
             cprint(msg,color)
