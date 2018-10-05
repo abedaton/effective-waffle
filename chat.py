@@ -18,7 +18,7 @@ class Server:
                 data = c.recv(1024)
             except:
                 break
-            if not data:
+            if not data or [c,username] not in self.connections:
                 print(str(a[0]) + ":" + str(a[1]),"("+str(username,"utf-8")+")", "disconnected")
                 self.connections.remove([c,username])
                 for connection in self.connections:
