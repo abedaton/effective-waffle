@@ -26,7 +26,7 @@ class Server:
             msg=data.split(maxsplit=2)
             if msg[0]=="/msg":
                 for connection in self.connections:
-                    if connection[1]==msg[1] or connection[1]==username:
+                    if connection[1]==bytes(msg[1],"utf-8") or connection[1]==username:
                         connection[0].send(username+b' (pm): '+bytes(msg[2],"utf-8"))
             else:
                 for connection in self.connections:
@@ -64,7 +64,7 @@ class Client:
             if not data:
                 break
             msg=str(data,"utf-8")
-            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")]==self.username else "cyan"
+            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")] in [self.username,self.username+" (pm)"] else "cyan"
             if color=="green":
                 msg="message sent"
             cprint(msg,color)
@@ -79,31 +79,32 @@ class Client:
                 self.sock.send(bytes(msg, "utf-8"))
 
 
-if (len(sys.argv) > 1):
-    try:
-        from termcolor import cprint
-        print("success 1")
-    except:
+if __name__=="__main__":
+    if (len(sys.argv) > 1):
         try:
-            os.system("pip3 install --user termcolor > /dev/null")
-            print("Download des couleurs.....")
-            time.sleep(10)
             from termcolor import cprint
-            print("success 2")
+            print("success 1")
         except:
             try:
-                os.system(os.system("python3 -m pip install --user Xlib > /dev/null"))
-                print("Download des couleurs......")
+                os.system("pip3 install --user termcolor > /dev/null")
+                print("Download des couleurs.....")
                 time.sleep(10)
                 from termcolor import cprint
-                print("success 3")
+                print("success 2")
             except:
-                cprint=(lambda msg,color:print(msg))
-                print("ben no color for you bah voila")
-    try:
-        Client = Client(sys.argv[1])
-    except KeyboardInterrupt:
-        cprint("\nGoodbye :-)","magenta")
-else:
-    server = Server()
-    server.run()
+                try:
+                    os.system(os.system("python3 -m pip install --user Xlib > /dev/null"))
+                    print("Download des couleurs......")
+                    time.sleep(10)
+                    from termcolor import cprint
+                    print("success 3")
+                except:
+                    cprint=(lambda msg,color:print(msg))
+                    print("ben no color for you bah voila")
+        try:
+            Client = Client(sys.argv[1])
+        except KeyboardInterrupt:
+            cprint("\nGoodbye :-)","magenta")
+    else:
+        server = Server()
+        server.run()
