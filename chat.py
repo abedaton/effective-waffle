@@ -14,9 +14,12 @@ class Server:
 
     def handler(self, c, a, username):
         while True:
-            data = c.recv(1024)
+            try:
+                data = c.recv(1024)
+            except:
+                break
             if not data:
-                print(str(a[0]) + ":" + str(a[1]), "disconnected")
+                print(str(a[0]) + ":" + str(a[1]),"("+str(username,"utf-8")+")", "disconnected")
                 self.connections.remove([c,username])
                 for connection in self.connections:
                     connection[0].send(username+b' disconnected\n')
@@ -51,9 +54,9 @@ class Server:
                         if str(connection[1],"utf-8") in cmd[1].split():
                             closeCons.append(connection)
                     for closeCon in closeCons:
-                        print(closeCon[1], "disconnected")
+                        print(closeCon[1], "kicked")
                         for connection in self.connections:
-                            connection[0].send(closeCon[1]+b' disconnected\n')
+                            connection[0].send(closeCon[1]+b' kicked\n')
                         self.connections.remove(closeCon)
                         closeCon[0].close()
 
@@ -64,7 +67,7 @@ class Server:
         while True:
             c, a = self.sock.accept()
             username=c.recv(1024)
-            print(username+b' connected')
+            print(str(a[0]) + ":" + str(a[1]),"("+str(username,"utf-8")+")", "connected")
             for connection in self.connections:
                 connection[0].send(username+b' connected')
             users=[str(connection[1],"utf-8") for connection in self.connections]
@@ -73,9 +76,6 @@ class Server:
             cThread = threading.Thread(target=self.handler, args=(c, a, username))
             cThread.daemon = True
             cThread.start()
-            print(str(a[0]) + ":" + str(a[1]), "connected")
-
-
 
 class Client:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
