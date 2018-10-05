@@ -93,7 +93,7 @@ class Client:
             if not data:
                 break
             msg=str(data,"utf-8")
-            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")] in [self.username,"[FROM: "self.username+"]"] else "red" if msg[:7]=="[SERVER" else "cyan"
+            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")] in [self.username,"[FROM: "+self.username+"]"] else "red" if msg[:7]=="[SERVER" else "cyan"
             if color=="green":
                 msg="message sent"
             cprint(msg,color)
