@@ -32,7 +32,29 @@ class Server:
                 for connection in self.connections:
                     connection[0].send(username+b': '+bytes(data,"utf-8"))
 
+    def commandHandler(self):
+        while True:
+            cmd=input("").split(maxsplit=1)
+            if len(cmd)>0:
+                if cmd[0]=="msgall" and len(cmd)>1:
+                    for connection in self.connections:
+                        connection[0].send(b'[SERVER]: '+bytes(cmd[1],"utf-8"))
+                elif cmd[0]=="kick" and len(cmd)>1:
+                    closeCons=[]
+                    for connection in self.connections:
+                        if str(connection[1],"utf-8") in cmd[1].split():
+                            closeCond.append(connection)
+                    for closeCon in closeCons:
+                        print(closeCon, "disconnected")
+                        self.connections.remove(closeCon)
+                        for connection in self.connections:
+                            connection[0].send(closeCon[1]+b' disconnected\n')
+                        closeCon[0].close()
+
     def run(self):
+        cmdThread = threading.Thread(target=self.commandHandler)
+        cmdThread.daemon = True
+        cmdThread.start()
         while True:
             c, a = self.sock.accept()
             username=c.recv(1024)
@@ -64,7 +86,7 @@ class Client:
             if not data:
                 break
             msg=str(data,"utf-8")
-            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")] in [self.username,self.username+" (pm)"] else "cyan"
+            color="yellow" if ":" not in msg else "green" if msg[:msg.index(":")] in [self.username,self.username+" (pm)"] else "red" if msg[:msg.index(":")]=="[SERVER]" else "cyan"
             if color=="green":
                 msg="message sent"
             cprint(msg,color)
