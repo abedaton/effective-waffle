@@ -6,8 +6,8 @@ import time
 import sys
 import os
 
-SERVER_IP="51.75.126.222"
-
+#SERVER_IP="51.75.126.222"
+SERVER_IP ="0.0.0.0"
 class Server:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
@@ -66,15 +66,27 @@ class Server:
                     for connection in self.connections:
                         if str(connection[1],"utf-8") in cmd[1].split():
                             closeCons.append(connection)
+                            connection[0].send(b"You have been kicked ! Press enter to continue.")
                     for closeCon in closeCons:
                         print(str(closeCon[1],"utf-8"), "kicked")
                         for connection in self.connections:
-                            connection[0].send(closeCon[1]+b' kicked\n')
+                            if connection[0] not in cmd[1].split():
+                                connection[0].send(closeCon[1]+b' kicked\n')
                         self.connections.remove(closeCon)
                         closeCon[0].close()
                 elif cmd[0]=="reboot":
-                    for connection in self.connections:
-                        connection[0].send(b'[SERVER]: About to REBOOT. Back online in a minute. Please use git pull to enjoy enhanced and new features.')
+                    i = 10
+                    while i > 0:
+                        for connection in self.connections:
+                            connection[0].send(b'[SERVER]: Server will reboot in '+bytes(i)+b"\n")
+                        time.sleep(1)
+                        i -= 1
+                        if i == 0:
+                            for connection in self.connections:
+                                connection[0].send(b"[SERVER]: Rebooting.....")
+                            sys.exit()
+                            raise SystemExit
+                            raise KeyboardInterrupt
 
     def run(self):
         cmdThread = threading.Thread(target=self.commandHandler)
