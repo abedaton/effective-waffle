@@ -37,6 +37,9 @@ class Server:
             elif len(msg)==1 and msg[0] == "/online":
                     users = [str(connection[1],"utf-8") for connection in self.connections]
                     c.send(bytes("Users connected:\n"+("\n".join(users) if len(users)>0 else "None"),"utf-8"))
+            elif len(msg)==2 and msg[0] == "/online":
+                    users = [str(connection[1],"utf-8") for connection in self.connections]
+                    c.send(bytes(msg[1]+(" online" if msg[1] in users else " offline"),"utf-8"))
             else:
                 for connection in self.connections:
                     connection[0].send(username+b': '+bytes(data,"utf-8"))
