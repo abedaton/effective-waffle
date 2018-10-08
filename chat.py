@@ -74,7 +74,7 @@ class Server:
                         closeCon[0].close()
                 elif cmd[0]=="reboot":
                     for connection in self.connections:
-                        connection[0].send(b'[SERVER]: About to REBOOT. Back online in a minute.')
+                        connection[0].send(b'[SERVER]: About to REBOOT. Back online in a minute. Please use git pull to enjoy enhanced and new features.')
 
     def run(self):
         cmdThread = threading.Thread(target=self.commandHandler)
