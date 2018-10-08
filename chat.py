@@ -22,12 +22,16 @@ class Server:
             except:
                 break
             if not data or [c,username] not in self.connections:
-                print(str(a[0]) + ":" + str(a[1]),"("+str(username,"utf-8")+")", "disconnected")
-                self.connections.remove([c,username])
-                for connection in self.connections:
-                    connection[0].send(username+b' disconnected\n')
-                c.close()
-                break
+                try:
+                    self.connections.remove([c,username])
+                    for connection in self.connections:
+                        connection[0].send(username+b' disconnected\n')
+                    c.close()
+                    print(str(a[0]) + ":" + str(a[1]),"("+str(username,"utf-8")+")", "disconnected")
+                except:
+                    pass
+                finally:
+                    break
             data=str(data,"utf-8")
             msg=data.split(maxsplit=2)
             if len(msg)==3 and msg[0]=="/msg":
@@ -63,7 +67,7 @@ class Server:
                         if str(connection[1],"utf-8") in cmd[1].split():
                             closeCons.append(connection)
                     for closeCon in closeCons:
-                        print(closeCon[1], "kicked")
+                        print(str(closeCon[1],"utf-8"), "kicked")
                         for connection in self.connections:
                             connection[0].send(closeCon[1]+b' kicked\n')
                         self.connections.remove(closeCon)
