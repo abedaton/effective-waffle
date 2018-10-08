@@ -2,8 +2,11 @@
 
 import socket
 import threading
+import time
 import sys
 import os
+
+SERVER_IP="51.75.126.222"
 
 class Server:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -112,7 +115,7 @@ class Client:
 
 
 if __name__=="__main__":
-    if (len(sys.argv) > 1):
+    if (len(sys.argv) <= 1):
         try:
             from termcolor import cprint
             print("success 1")
@@ -134,7 +137,7 @@ if __name__=="__main__":
                     cprint=(lambda msg,color:print(msg))
                     print("ben no color for you bah voila")
         try:
-            Client = Client(sys.argv[1])
+            Client = Client(SERVER_IP)
         except KeyboardInterrupt:
             cprint("\nGoodbye :-)","magenta")
     else:
