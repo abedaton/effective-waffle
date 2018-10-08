@@ -75,18 +75,8 @@ class Server:
                         self.connections.remove(closeCon)
                         closeCon[0].close()
                 elif cmd[0]=="reboot":
-                    i = 10
-                    while i > 0:
-                        for connection in self.connections:
-                            connection[0].send(b'[SERVER]: Server will reboot in '+bytes(i)+b"\n")
-                        time.sleep(1)
-                        i -= 1
-                        if i == 0:
-                            for connection in self.connections:
-                                connection[0].send(b"[SERVER]: Rebooting.....")
-                            sys.exit()
-                            raise SystemExit
-                            raise KeyboardInterrupt
+                    for connection in self.connections:
+                        connection[0].send(b'[SERVER]: Server will reboot in '+bytes(i)+b"\n")
 
     def run(self):
         cmdThread = threading.Thread(target=self.commandHandler)
