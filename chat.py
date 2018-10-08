@@ -72,6 +72,9 @@ class Server:
                             connection[0].send(closeCon[1]+b' kicked\n')
                         self.connections.remove(closeCon)
                         closeCon[0].close()
+                elif cmd[0]=="reboot":
+                    for connection in self.connections:
+                        connection[0].send(b'[SERVER]: About to REBOOT. Back online in a minute.')
 
     def run(self):
         cmdThread = threading.Thread(target=self.commandHandler)
