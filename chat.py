@@ -68,12 +68,16 @@ class Server:
                             closeCons.append(connection)
                             connection[0].send(b"You have been kicked ! Press enter to continue.")
                     for closeCon in closeCons:
-                        print(str(closeCon[1],"utf-8"), "kicked")
+                        cprint(str(closeCon[1],"utf-8")+" kicked","yellow")
                         for connection in self.connections:
                             if connection[0] not in cmd[1].split():
                                 connection[0].send(closeCon[1]+b' kicked\n')
                         self.connections.remove(closeCon)
                         closeCon[0].close()
+                elif cmd[0]=="online":
+                    cprint("Users online:","cyan")
+                    for connection in self.connections:
+                        cprint(str(connection[1],"utf-8"),"cyan")
                 elif cmd[0]=="reboot":
                     for connection in self.connections:
                         connection[0].send(b'[SERVER]: Server will reboot in '+bytes(i)+b"\n")
