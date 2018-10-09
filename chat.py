@@ -8,8 +8,8 @@ import os
 from signal import signal, SIGPIPE, SIG_DFL
 signal(SIGPIPE,SIG_DFL)
 
-#SERVER_IP="51.75.126.222"
-SERVER_IP = "0.0.0.0"
+SERVER_IP="51.75.126.222"
+#SERVER_IP = "0.0.0.0"
 class Server:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
