@@ -131,27 +131,27 @@ class Client:
 
 
 if __name__=="__main__":
-    if (len(sys.argv) <= 1):
+    try:
+        from termcolor import cprint
+        print("success 1")
+    except:
         try:
+            os.system("pip3 install --user termcolor > /dev/null")
+            print("Download des couleurs.....")
+            time.sleep(10)
             from termcolor import cprint
-            print("success 1")
+            print("success 2")
         except:
             try:
-                os.system("pip3 install --user termcolor > /dev/null")
-                print("Download des couleurs.....")
+                os.system("python3 -m pip install --user Xlib > /dev/null")
+                print("Download des couleurs......")
                 time.sleep(10)
                 from termcolor import cprint
-                print("success 2")
+                print("success 3")
             except:
-                try:
-                    os.system("python3 -m pip install --user Xlib > /dev/null")
-                    print("Download des couleurs......")
-                    time.sleep(10)
-                    from termcolor import cprint
-                    print("success 3")
-                except:
-                    cprint=(lambda msg,color:print(msg))
-                    print("ben no color for you bah voila")
+                cprint=(lambda msg,color:print(msg))
+                print("ben no color for you bah voila")
+    if (len(sys.argv) <= 1):
         try:
             Client = Client(SERVER_IP)
         except KeyboardInterrupt:
