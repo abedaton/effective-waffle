@@ -10,11 +10,14 @@ signal(SIGPIPE,SIG_DFL)
 
 SERVER_IP="51.75.126.222"
 #SERVER_IP = "0.0.0.0"
+
+SERVER_PORT=10002
+
 class Server:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connections = []
     def __init__(self):
-        self.sock.bind(("0.0.0.0", 10002))
+        self.sock.bind(("0.0.0.0", SERVER_PORT))
         self.sock.listen(1)
 
     def handler(self, c, a, username):
@@ -105,7 +108,7 @@ class Client:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def __init__(self, address):
-        self.sock.connect((address, 10000))
+        self.sock.connect((address, SERVER_PORT))
         self.username = input("Entrez votre pseudo: ")
         self.iThread = threading.Thread(target = self.sendMsg)
         self.iThread.daemon = True
