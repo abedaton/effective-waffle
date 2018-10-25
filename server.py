@@ -7,9 +7,11 @@ import sys
 import os
 from signal import signal, SIGPIPE, SIG_DFL
 signal(SIGPIPE,SIG_DFL)
+from ctypes import cdll
+lib = cdll.LoadLibrary("./database.so")
 
 SERVER_IP="51.75.126.222"
-#SERVER_IP = "0.0.0.0"
+SERVER_IP = "0.0.0.0"
 
 SERVER_PORT=10002
 
@@ -19,6 +21,9 @@ class Server:
     def __init__(self):
         self.sock.bind(("0.0.0.0", SERVER_PORT))
         self.sock.listen(1)
+        print("success")
+        lib.callMain()
+        print("call main success !!")
 
     def handler(self, c, a, username):
         while True:
