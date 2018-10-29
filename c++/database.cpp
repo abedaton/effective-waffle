@@ -17,12 +17,6 @@ bool login = false;
 long hashPass(char* password);
 static int myCallback(void* NotUsed, int argc, char** argv, char** azColName);
 
-extern "C"{
-	void callMain(){
-		main();
-	}
-}
-
 
 void savelogininfo(char *user, char *pwd){
 	std::cout<<*user<<std::endl;
