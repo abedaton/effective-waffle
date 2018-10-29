@@ -61,7 +61,7 @@ void run(){
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 
 	server.sin_family = AF_INET; // IPv4 address
-	server.sin_addr.s_addr = inet_addr("vps538398"); // Server IP
+	server.sin_addr.s_addr = inet_addr("164.132.196.204"); // Server IP
 	//server.sin_addr.s_addr = inet_addr("0.0.0.0");
 	server.sin_port = htons(10002); // Server Port - Host TO Network Short conversion
 

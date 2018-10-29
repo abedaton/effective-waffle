@@ -7,7 +7,7 @@ from signal import signal, SIGPIPE, SIG_DFL
 signal(SIGPIPE,SIG_DFL)
 
 
-SERVER_IP="vps538398"
+SERVER_IP="164.132.196.204"
 #SERVER_IP = "0.0.0.0"
 SERVER_PORT=10002
 cprint=(lambda msg,color:print(msg))
