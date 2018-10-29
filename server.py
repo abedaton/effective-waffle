@@ -10,8 +10,8 @@ signal(SIGPIPE,SIG_DFL)
 #from ctypes import cdll
 #lib = cdll.LoadLibrary("./database.so")
 
-SERVER_IP="51.75.126.222"
-SERVER_IP = "0.0.0.0"
+#SERVER_IP="51.75.126.222"
+#SERVER_IP = "0.0.0.0"
 
 SERVER_PORT=10002
 
